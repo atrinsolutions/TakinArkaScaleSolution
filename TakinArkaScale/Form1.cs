@@ -2,6 +2,8 @@
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.DataFormats;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -16,7 +18,7 @@ namespace TakinArkaScale
         private byte RData;
         private int TakinServiceState, ProtocolAddress, ProtocolFunction, ProtocolDataLenght, LoopCnt, crchigh, crclow, TempVariable, crci;
         private byte[] DataPack = new byte[250];
-        private int ViewWeight,TareWeight;
+        private int ViewWeight, TareWeight;
         private int WeightIndication;
         bool ZeroFlag;
         bool TareFlag;
@@ -96,6 +98,8 @@ namespace TakinArkaScale
         byte stateMachine = 0;
         int weight = 0;
         string rawWeight;
+        TAKIN_Configuration defaultConfig = null;
+        XDocument doc = new XDocument();
         public Form1()
         {
             InitializeComponent();
@@ -176,7 +180,7 @@ namespace TakinArkaScale
                             string[] outdate2 = outdate[1].Split("kg");
                             stringWeight = outdate2[0];
                             rawWeight = stringWeight;
-                            weight = (int)(double.Parse(stringWeight)*1000);
+                            weight = (int)(double.Parse(stringWeight) * 1000);
                             SetTextWeight(stringWeight);
                         }
                     }
@@ -184,8 +188,78 @@ namespace TakinArkaScale
                 catch (TimeoutException) { }
             }
         }
+
+        private void WriteToServiceConfiguration()
+        {
+            string newValue = string.Empty;
+            XmlDocument xmlDoc = new XmlDocument();
+            string serviceConfigFile = $@"{System.AppDomain.CurrentDomain.BaseDirectory}Initializer.xml";
+            XElement t = XElement.Load(serviceConfigFile);
+            t.Element("Configuration").Element("SerialPortName").Value = defaultConfig.SerialPortName;
+            t.Element("Configuration").Element("Baudrate").Value = defaultConfig.Baudrate.ToString();
+            t.Element("Configuration").Element("Parity").Value = defaultConfig.Parity.ToString();
+            t.Element("Configuration").Element("StopBit").Value = defaultConfig.StopBit.ToString();
+            t.Element("Configuration").Element("HostIP").Value = defaultConfig.HostIP;
+            t.Element("Configuration").Element("TcpPort1").Value = defaultConfig.TcpPort1.ToString();
+            t.Element("Configuration").Element("TcpPort2").Value = defaultConfig.TcpPort2.ToString();
+            t.Element("Configuration").Element("isTcpServer").Value = defaultConfig.isTcpServer.ToString();
+            t.Element("Configuration").Element("TcpTimeout").Value = defaultConfig.TcpTimeout.ToString();
+            t.Save(serviceConfigFile);
+
+        }
+
+        private XElement GetElement(XDocument doc, string elementName)
+        {
+            foreach (XNode node in doc.DescendantNodes())
+            {
+                if (node is XElement)
+                {
+                    XElement element = (XElement)node;
+                    if (element.Name.LocalName.Equals(elementName))
+                        return element;
+                }
+            }
+            return null;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            string initializerFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}initializer.xml";
+            try
+            {
+                doc = XDocument.Load(initializerFilePath);
+                defaultConfig = (from element in doc.Descendants("DataContext").Elements("Configuration")
+                                 select new TAKIN_Configuration
+                                 {
+                                     SerialPortName = element.Element("SerialPortName").Value.ToString(),
+                                     Baudrate = Convert.ToInt32(element.Element("Baudrate").Value),
+                                     Parity = (Parity)Enum.Parse(typeof(Parity), element.Element("Parity").Value, true),
+                                     StopBit = (StopBits)Enum.Parse(typeof(StopBits), element.Element("StopBit").Value, true),
+                                     HostIP = element.Element("HostIP").Value,
+                                     TcpPort1 = Convert.ToInt32(element.Element("TcpPort1").Value),
+                                     TcpPort2 = Convert.ToInt32(element.Element("TcpPort2").Value),
+                                     isTcpServer = Convert.ToBoolean(element.Element("isTcpServer").Value),
+                                     TcpTimeout = Convert.ToInt32(element.Element("TcpTimeout").Value)
+
+                                 }).FirstOrDefault();
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(initializerFilePath);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             this.BackColor = Color.LimeGreen;
             this.TransparencyKey = Color.LimeGreen;
@@ -206,6 +280,7 @@ namespace TakinArkaScale
 
             clearTare.FlatStyle = FlatStyle.Flat;
             clearTare.BackColor = Color.Transparent;
+            clearTare.ForeColor = Color.Transparent;
             clearTare.FlatAppearance.MouseDownBackColor = Color.Transparent;
             clearTare.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
@@ -238,12 +313,15 @@ namespace TakinArkaScale
             foreach (string port in ports)
             {
                 ToolStripMenuItem menuItemCom = new ToolStripMenuItem(port);
+                menuItemCom.Click += setPortName;
                 menuItemA1.DropDownItems.Add(menuItemCom);
-            }
 
+            }
+            
             foreach (string baudrates in SupportedBaudRates)
             {
                 ToolStripMenuItem menuItemBaudrates = new ToolStripMenuItem(baudrates);
+                menuItemBaudrates.Click += setPortBaudrate;
                 menuItemA2.DropDownItems.Add(menuItemBaudrates);
             }
             this.contextMenuStrip1 = menu;
@@ -251,21 +329,20 @@ namespace TakinArkaScale
 
 
             WeightSerial = new SerialPort();
-            string PortName = "COM1";
-            bool IsPortExist = ports.Where(n => n == PortName).Any();
+            bool IsPortExist = ports.Where(n => n == defaultConfig.SerialPortName).Any();
             if (IsPortExist)
             {
                 try
                 {
-                    WeightSerial.BaudRate = Int32.Parse("115200");
-                    WeightSerial.Parity = Parity.None;
-                    WeightSerial.StopBits = StopBits.One;
+                    WeightSerial.BaudRate = defaultConfig.Baudrate;
+                    WeightSerial.Parity = defaultConfig.Parity;
+                    WeightSerial.StopBits = defaultConfig.StopBit;
                     WeightSerial.Handshake = Handshake.None;
                     WeightSerial.DataBits = 8;
-                    WeightSerial.PortName = PortName;
+                    WeightSerial.PortName = defaultConfig.SerialPortName;
                     this.WeightSerial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
                     WeightSerial.Open();
-                    GetWeighTimer= new Timer();
+                    GetWeighTimer = new Timer();
                     GetWeighTimer.Interval = (100); // 45 mins
                     GetWeighTimer.Tick += new EventHandler(GetWeighTimer_Tick);
                     GetWeighTimer.Start();
@@ -275,14 +352,12 @@ namespace TakinArkaScale
                 catch
                 {
                     MessageBox.Show("پورت سخت افزاری باز است", "خطا", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                 }
 
             }
             else
             {
                 MessageBox.Show("پورت سخت افزاری موجود نیست", "خطا", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
 
         }
@@ -367,9 +442,9 @@ namespace TakinArkaScale
             ids = formIdList.Split(',').Select(int.Parse).ToList();
 
             ViewWeight = ids[0];
-            TareWeight = ids[1];    
+            TareWeight = ids[1];
             WeightIndication = ids[3];
-            ZeroFlag = (WeightIndication & 0x01) >0;
+            ZeroFlag = (WeightIndication & 0x01) > 0;
             WeightIndication >>= 1;
             TareFlag = (WeightIndication & 0x02) > 0;
             WeightIndication >>= 1;
@@ -489,7 +564,7 @@ namespace TakinArkaScale
                                 ShowData();
                                 ConnectionCounter = 0;
                                 break;
-                            case 0x16 :
+                            case 0x16:
                                 SystemConnected = true;
                                 this.Invoke(new EventHandler(UpdateConnectionLabel));
                                 ConnectionCounter = 0;
@@ -512,7 +587,7 @@ namespace TakinArkaScale
         {
             if (SystemConnected == true)
             {
-                this.lblConnection.BackColor= Color.Green;
+                this.lblConnection.BackColor = Color.Green;
             }
             else
             {
@@ -533,10 +608,15 @@ namespace TakinArkaScale
         }
         private void ApplySetting(object sender, EventArgs e)
         {
+            WriteToServiceConfiguration();
+            if(WeightSerial.IsOpen == true)
+            {
+                WeightSerial.Close();
+            }
             Application.Restart();
             Environment.Exit(0);
         }
-        
+
 
         private void btnExit_Click(object sender, EventArgs e)
         {
@@ -545,13 +625,20 @@ namespace TakinArkaScale
 
         void firstPortSelection(object sender, EventArgs e)
         {
-            string UserAnswer = Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت یک", "شماره پورت", "9990");
+            defaultConfig.TcpPort1= int.Parse(Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت یک", "شماره پورت", "9990"));
         }
 
-
+        private void setPortName(object sender, EventArgs e)
+        {
+            defaultConfig.SerialPortName = sender.ToString();
+        }
+        private void setPortBaudrate(object sender, EventArgs e)
+        {
+            defaultConfig.Baudrate = int.Parse(sender.ToString());
+        }
         private void secondPortSelection(object sender, EventArgs e)
         {
-            string UserAnswer = Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت دو", "شماره پورت", "9991");
+            defaultConfig.TcpPort2 = int.Parse(Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت دو", "شماره پورت", "9991"));
         }
     }
 }
