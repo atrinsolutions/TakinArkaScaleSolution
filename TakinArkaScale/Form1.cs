@@ -489,7 +489,7 @@ namespace TakinArkaScale
                                 ShowData();
                                 ConnectionCounter = 0;
                                 break;
-                            case 0x16:
+                            case 0x16 :
                                 SystemConnected = true;
                                 this.Invoke(new EventHandler(UpdateConnectionLabel));
                                 ConnectionCounter = 0;
