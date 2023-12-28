@@ -20,7 +20,7 @@ namespace TakinArkaScale
         private byte RData;
         private int TakinServiceState, ProtocolAddress, ProtocolFunction, ProtocolDataLenght, LoopCnt, crchigh, crclow, TempVariable, crci;
         private byte[] DataPack = new byte[250];
-        private int ViewWeight, TareWeight;
+        private int ViewWeight, TareWeight, RoundWeight, fixedTareValue;
         private int WeightIndication;
         bool ZeroFlag;
         bool TareFlag;
@@ -95,8 +95,12 @@ namespace TakinArkaScale
     "230400",
     "460800",
     "921600"
-};      Thread TcpTask1;
+};
+        Thread TcpTask1;
         Thread TcpTask2;
+        Task<int> ZeroTask;
+        bool responseRecevied = false;
+        int responseCode = 0;
         TcpListener listener1 = null;
         TcpListener listener2 = null;
         byte stateMachine = 0;
@@ -113,6 +117,118 @@ namespace TakinArkaScale
         int clientDataCount1 = 0;
         public byte[] netBuffer2 = new byte[204];
 
+
+        async void handleCommands(byte[] netBuffer, NetworkStream dataStream)
+        {
+            string s = System.Text.Encoding.UTF8.GetString(netBuffer, 0, netBuffer.Length);
+
+            RoundWeight = 0;
+            TareWeight = 0;
+
+
+            StableFlag = false;
+            ViewWeight = RoundWeight - TareWeight;
+
+
+            if (s.Contains("#WL#"))
+            {
+                string output;
+
+                if (RoundWeight >= 0)
+                {
+                    if (ViewWeight > 0 || ViewWeight < 0)
+                    {
+                        output = "#1#" + ViewWeight.ToString();
+                        if (StableFlag)
+                        {
+                            output += "#1#";
+                        }
+                        else
+                        {
+                            output += "#0#";
+                        }
+                        output += TareWeight.ToString();
+                    }
+                    else
+                    {
+                        output = "#0#1";
+                        if (StableFlag)
+                        {
+                            output += "#1#";
+                        }
+                        else
+                        {
+                            output += "#0#";
+                        }
+                        output += TareWeight.ToString();
+                    }
+
+                }
+                else
+                {
+                    output = "#0#Peso negativo#";
+                }
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
+            }
+            if (s.Contains("#WG#"))
+            {
+                string output;
+
+                if (RoundWeight >= 0)
+                {
+                    if (ViewWeight > 0)
+                    {
+                        output = "#1#" + ViewWeight.ToString();
+                        if (StableFlag)
+                        {
+                            output += "#1#";
+                        }
+                        else
+                        {
+                            output += "#0#";
+                        }
+                        output += TareWeight.ToString();
+                    }
+                    else
+                    {
+                        if (ViewWeight < 0)
+                            output = "#0#Weight Negative#";
+                        else
+                            output = "#0#Zerot-Weigh#";
+                    }
+
+                }
+                else
+                {
+                    output = "#0#Peso negativo#";
+                }
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
+            }
+            if (s.Contains("#WZ#"))
+            {
+                int resault = SetZero();
+            }
+            if (s.Contains("#TP#"))
+            {
+                int resault = SetTare();
+            }
+            if (s.Contains("#TR#"))
+            {
+                int resault = ClearTare();
+            }
+            if (s.Contains("#TS#"))
+            {
+                var splitStr = s.Split('#');
+                if (splitStr[1] == "TS")
+                {
+                    fixedTareValue = int.Parse(splitStr[2]);
+                    int resault = SetFixedTare(fixedTareValue);
+                }
+
+            }
+        }
         public void TcpCommandTasks1(Object objScale)
         {
             IPAddress serverIp = IPAddress.Parse(defaultConfig.HostIP);
@@ -124,9 +240,9 @@ namespace TakinArkaScale
                 {
                     tcpClient1 = listener1.AcceptTcpClient();
                     dataStream1 = tcpClient1.GetStream();
-                    while ((clientDataCount1 = dataStream1.Read(netBuffer1, 0,netBuffer1.Length)) != 0)
+                    while ((clientDataCount1 = dataStream1.Read(netBuffer1, 0, netBuffer1.Length)) != 0)
                     {
-                        Console.WriteLine(netBuffer1);
+                        handleCommands(netBuffer1, dataStream1);
                     }
                 }
                 catch (Exception ex)
@@ -135,7 +251,6 @@ namespace TakinArkaScale
                 }
             }
         }
-
         public void TcpCommandTasks2(Object objScale)
         {
             IPAddress serverIp = IPAddress.Parse(defaultConfig.HostIP);
@@ -149,7 +264,7 @@ namespace TakinArkaScale
                     dataStream2 = tcpClient2.GetStream();
                     while ((clientDataCount = dataStream2.Read(netBuffer2, 0, netBuffer2.Length)) != 0)
                     {
-                        Console.WriteLine(netBuffer2);
+                        handleCommands(netBuffer2, dataStream2);
                     }
                 }
                 catch (Exception ex)
@@ -311,7 +426,7 @@ namespace TakinArkaScale
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
 
 
             this.BackColor = Color.LimeGreen;
@@ -450,32 +565,9 @@ namespace TakinArkaScale
         {
             string formIdList;
             List<int> ids;
-
-            /*  if (DataPack[2]=='-')
-              {
-                  if(DataPack[3]=='4')
-                  {
-                      formIdList = System.Text.Encoding.UTF8.GetString(DataPack, 4, ProtocolDataLenght);
-                      ids = formIdList.Split(',').Select(int.Parse).ToList();
-                      weightState = true;
-                  }
-                  else
-                  {
-                      formIdList = System.Text.Encoding.UTF8.GetString(DataPack, 2, ProtocolDataLenght);
-                      ids = formIdList.Split(',').Select(int.Parse).ToList();
-                  }
-              }
-              else
-              {
-                  formIdList = System.Text.Encoding.UTF8.GetString(DataPack, 2, ProtocolDataLenght);
-                  ids = formIdList.Split(',').Select(int.Parse).ToList();
-              }*/
-
             formIdList = System.Text.Encoding.UTF8.GetString(DataPack, 2, ProtocolDataLenght);
             ids = formIdList.Split(',').Select(int.Parse).ToList();
-
             ViewWeight = ids[0];
-
             TareWeight = ids[1];
             WeightIndication = ids[3];
             ZeroFlag = (WeightIndication & 0x01) > 0;
@@ -491,6 +583,7 @@ namespace TakinArkaScale
             netLed.BackColor = TareFlag == true ? Color.Green : Color.LightGray;
             if (NegFlag)
                 ViewWeight *= -1;
+            RoundWeight = ViewWeight + TareWeight;
         }
 
         void GetTare()
@@ -501,22 +594,60 @@ namespace TakinArkaScale
         }
 
 
-        private void clearTare_Click(object sender, EventArgs e)
+        public int readResponse()
         {
-            byte[] IsOnlinePacket = { 0x01, 0x25, 0x01, 0x00, 0x9b, 0x61 };
-            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
+            return responseCode;
         }
 
-        private void zero_Click(object sender, EventArgs e)
+        public int SetZero()
         {
             byte[] IsOnlinePacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
+            bool responseRecevied = false;
+            while (responseRecevied == false) ;
+            return readResponse();
         }
 
-        private void tare_Click(object sender, EventArgs e)
+
+        public int SetTare()
         {
             byte[] IsOnlinePacket = { 0x01, 0x26, 0x01, 0x00, 0x9b, 0x91 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
+            bool responseRecevied = false;
+            while (responseRecevied == false) ;
+            return readResponse();
+        }
+        public int ClearTare()
+        {
+            byte[] IsOnlinePacket = { 0x01, 0x25, 0x01, 0x00, 0x9b, 0x61 };
+            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
+            bool responseRecevied = false;
+            while (responseRecevied == false) ;
+            return readResponse();
+        }
+        public int SetFixedTare(int value)
+        {
+            byte[] IsOnlinePacket = { 0x01, 0x42, (byte)value.ToString().Length};
+            byte[] valueBytes = System.Text.Encoding.ASCII.GetBytes(value.ToString());
+            byte[] crc = { 0x00, 0x00 };
+
+            IsOnlinePacket = IsOnlinePacket.Concat(valueBytes).ToArray().Concat(crc).ToArray();
+            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
+            bool responseRecevied = false;
+            while (responseRecevied == false) ;
+            return readResponse();
+        }
+        private void clearTare_Click(object sender, EventArgs e)
+        {
+            ClearTare();
+        }
+        private void zero_Click(object sender, EventArgs e)
+        {
+            SetZero();
+        }
+        private void tare_Click(object sender, EventArgs e)
+        {
+            SetTare();
         }
 
         private void UpdateScreen()
@@ -601,6 +732,18 @@ namespace TakinArkaScale
                                 SystemConnected = true;
                                 this.Invoke(new EventHandler(UpdateConnectionLabel));
                                 ConnectionCounter = 0;
+                                break;
+                            case 0x27:
+                                responseRecevied = true;
+                                responseCode = DataPack[2];
+                                break;
+                            case 0x26:
+                                responseRecevied = true;
+                                responseCode = DataPack[2];
+                                break;
+                            case 0x25:
+                                responseRecevied = true;
+                                responseCode = DataPack[2];
                                 break;
                         }
                     }
