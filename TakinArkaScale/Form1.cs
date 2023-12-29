@@ -242,7 +242,7 @@ namespace TakinArkaScale
                     if (functionCode == 0x45)
                         output = "#1#";
                     else
-                        output = "#0#";
+                        output = "#0#110-Plate not empty#";
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
                     dataStream.Write(msg, 0, msg.Length);
                 }
