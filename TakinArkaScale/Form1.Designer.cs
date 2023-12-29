@@ -199,30 +199,30 @@
             // lbWeight
             // 
             this.lbWeight.AutoSize = true;
-            this.lbWeight.BackColor = System.Drawing.SystemColors.Window;
-            this.lbWeight.Font = new System.Drawing.Font("SimSun", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbWeight.Location = new System.Drawing.Point(218, 46);
+            this.lbWeight.BackColor = System.Drawing.Color.Transparent;
+            this.lbWeight.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbWeight.Location = new System.Drawing.Point(211, 40);
             this.lbWeight.Name = "lbWeight";
-            this.lbWeight.Size = new System.Drawing.Size(145, 48);
+            this.lbWeight.Size = new System.Drawing.Size(186, 54);
             this.lbWeight.TabIndex = 7;
-            this.lbWeight.Text = "0.000";
+            this.lbWeight.Text = "22.780";
             // 
             // lbTare
             // 
             this.lbTare.AutoSize = true;
             this.lbTare.BackColor = System.Drawing.Color.Transparent;
-            this.lbTare.Font = new System.Drawing.Font("SimSun", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbTare.Location = new System.Drawing.Point(31, 46);
+            this.lbTare.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbTare.Location = new System.Drawing.Point(31, 42);
             this.lbTare.Name = "lbTare";
-            this.lbTare.Size = new System.Drawing.Size(145, 48);
+            this.lbTare.Size = new System.Drawing.Size(156, 54);
             this.lbTare.TabIndex = 8;
-            this.lbTare.Text = "0.000";
+            this.lbTare.Text = "1.250";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(382, 17);
+            this.label1.Location = new System.Drawing.Point(382, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 15);
             this.label1.TabIndex = 10;
@@ -232,7 +232,7 @@
             this.button1.BackColor = System.Drawing.Color.White;
             this.button1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.button1.Image = global::TakinArkaScale.Properties.Resources.exit;
-            this.button1.Location = new System.Drawing.Point(346, 4);
+            this.button1.Location = new System.Drawing.Point(346, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(32, 18);
             this.button1.TabIndex = 9;
@@ -243,16 +243,17 @@
             // 
             this.lblConnection.AutoSize = true;
             this.lblConnection.BackColor = System.Drawing.Color.IndianRed;
-            this.lblConnection.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblConnection.Location = new System.Drawing.Point(49, 9);
+            this.lblConnection.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblConnection.Location = new System.Drawing.Point(54, 4);
             this.lblConnection.Name = "lblConnection";
-            this.lblConnection.Size = new System.Drawing.Size(15, 11);
+            this.lblConnection.Size = new System.Drawing.Size(22, 13);
             this.lblConnection.TabIndex = 11;
             this.lblConnection.Text = "     ";
             // 
             // zero
             // 
-            this.zero.Location = new System.Drawing.Point(348, 100);
+            this.zero.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.zero.Location = new System.Drawing.Point(348, 99);
             this.zero.Name = "zero";
             this.zero.Size = new System.Drawing.Size(54, 23);
             this.zero.TabIndex = 12;
@@ -262,21 +263,23 @@
             // 
             // clearTare
             // 
-            this.clearTare.Location = new System.Drawing.Point(276, 100);
+            this.clearTare.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.clearTare.Location = new System.Drawing.Point(276, 99);
             this.clearTare.Name = "clearTare";
             this.clearTare.Size = new System.Drawing.Size(66, 23);
             this.clearTare.TabIndex = 13;
-            this.clearTare.Text = "clearTare";
+            this.clearTare.Text = "R-Tare";
             this.clearTare.UseVisualStyleBackColor = true;
             this.clearTare.Click += new System.EventHandler(this.clearTare_Click);
             // 
             // tare
             // 
-            this.tare.Location = new System.Drawing.Point(211, 100);
+            this.tare.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tare.Location = new System.Drawing.Point(211, 99);
             this.tare.Name = "tare";
             this.tare.Size = new System.Drawing.Size(59, 23);
             this.tare.TabIndex = 14;
-            this.tare.Text = "tare";
+            this.tare.Text = "Tare";
             this.tare.UseVisualStyleBackColor = true;
             this.tare.Click += new System.EventHandler(this.tare_Click);
             // 
@@ -284,9 +287,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(12, 104);
+            this.label2.Font = new System.Drawing.Font("B Nazanin", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(7, 98);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 15);
+            this.label2.Size = new System.Drawing.Size(35, 26);
             this.label2.TabIndex = 15;
             this.label2.Text = "صفر";
             // 
@@ -295,7 +299,7 @@
             this.zeroLed.AutoSize = true;
             this.zeroLed.BackColor = System.Drawing.Color.Silver;
             this.zeroLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.zeroLed.Location = new System.Drawing.Point(44, 108);
+            this.zeroLed.Location = new System.Drawing.Point(44, 107);
             this.zeroLed.Name = "zeroLed";
             this.zeroLed.Size = new System.Drawing.Size(15, 11);
             this.zeroLed.TabIndex = 16;
@@ -306,7 +310,7 @@
             this.netLed.AutoSize = true;
             this.netLed.BackColor = System.Drawing.Color.Silver;
             this.netLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.netLed.Location = new System.Drawing.Point(171, 108);
+            this.netLed.Location = new System.Drawing.Point(171, 107);
             this.netLed.Name = "netLed";
             this.netLed.Size = new System.Drawing.Size(15, 11);
             this.netLed.TabIndex = 18;
@@ -316,9 +320,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Location = new System.Drawing.Point(128, 104);
+            this.label4.Font = new System.Drawing.Font("B Nazanin", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(127, 98);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 15);
+            this.label4.Size = new System.Drawing.Size(40, 24);
             this.label4.TabIndex = 17;
             this.label4.Text = "خالص";
             // 
@@ -327,7 +332,7 @@
             this.stbLed.AutoSize = true;
             this.stbLed.BackColor = System.Drawing.Color.Silver;
             this.stbLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.stbLed.Location = new System.Drawing.Point(102, 108);
+            this.stbLed.Location = new System.Drawing.Point(102, 107);
             this.stbLed.Name = "stbLed";
             this.stbLed.Size = new System.Drawing.Size(15, 11);
             this.stbLed.TabIndex = 20;
@@ -337,9 +342,10 @@
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Location = new System.Drawing.Point(67, 105);
+            this.label6.Font = new System.Drawing.Font("B Nazanin", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(61, 98);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 15);
+            this.label6.Size = new System.Drawing.Size(39, 26);
             this.label6.TabIndex = 19;
             this.label6.Text = "ثبات";
             // 
@@ -348,8 +354,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(412, 131);
+            this.BackgroundImage = global::TakinArkaScale.Properties.Resources.FORM2;
+            this.ClientSize = new System.Drawing.Size(416, 127);
             this.Controls.Add(this.stbLed);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.netLed);

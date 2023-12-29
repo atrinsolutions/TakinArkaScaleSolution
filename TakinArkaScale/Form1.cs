@@ -1,8 +1,10 @@
-﻿using System.IO.Ports;
+﻿using System.Drawing.Drawing2D;
+using System.IO.Ports;
 using System.Net;
 using System.Net.Sockets;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,6 +18,19 @@ namespace TakinArkaScale
 {
     public partial class Form1 : Form
     {
+
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
+
         private int ConnectionCounter = 0;
         private byte RData;
         private int TakinServiceState, ProtocolAddress, ProtocolFunction, ProtocolDataLenght, LoopCnt, crchigh, crclow, TempVariable, crci;
@@ -310,6 +325,10 @@ namespace TakinArkaScale
         public Form1()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
             string initializerFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}initializer.xml";
             try
             {
