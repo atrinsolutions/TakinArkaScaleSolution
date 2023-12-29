@@ -101,6 +101,7 @@ namespace TakinArkaScale
         Task<int> ZeroTask;
         bool responseRecevied = false;
         int responseCode = 0;
+        int functionCode = 0;
         TcpListener listener1 = null;
         TcpListener listener2 = null;
         byte stateMachine = 0;
@@ -121,15 +122,6 @@ namespace TakinArkaScale
         async void handleCommands(byte[] netBuffer, NetworkStream dataStream)
         {
             string s = System.Text.Encoding.UTF8.GetString(netBuffer, 0, netBuffer.Length);
-
-            RoundWeight = 0;
-            TareWeight = 0;
-
-
-            StableFlag = false;
-            ViewWeight = RoundWeight - TareWeight;
-
-
             if (s.Contains("#WL#"))
             {
                 string output;
@@ -208,15 +200,36 @@ namespace TakinArkaScale
             }
             if (s.Contains("#WZ#"))
             {
-                int resault = SetZero();
+                SetZero();
+                string output;
+                if (functionCode == 0x27)
+                    output = "#1#";
+                else
+                    output = "#0#";
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
             }
             if (s.Contains("#TP#"))
             {
-                int resault = SetTare();
+                SetTare();
+                string output;
+                if (functionCode == 0x26)
+                    output = "#1#";
+                else
+                    output = "#0#";
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
             }
             if (s.Contains("#TR#"))
             {
-                int resault = ClearTare();
+                ClearTare();
+                string output;
+                if (functionCode == 0x25)
+                    output = "#1#";
+                else
+                    output = "#0#";
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
             }
             if (s.Contains("#TS#"))
             {
@@ -224,7 +237,14 @@ namespace TakinArkaScale
                 if (splitStr[1] == "TS")
                 {
                     fixedTareValue = int.Parse(splitStr[2]);
-                    int resault = SetFixedTare(fixedTareValue);
+                    SetFixedTare(fixedTareValue);
+                    string output;
+                    if (functionCode == 0x45)
+                        output = "#1#";
+                    else
+                        output = "#0#";
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                    dataStream.Write(msg, 0, msg.Length);
                 }
 
             }
@@ -527,8 +547,8 @@ namespace TakinArkaScale
                 {
                     byte[] IsOnlinePacket = { 0x01, 0x16, 0x01, 0x00, 0x94, 0x91 };
                     WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-               //     byte[] ZeroPacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
-               //     WeightSerial.Write(ZeroPacket, 0, ZeroPacket.Length);
+                    //     byte[] ZeroPacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
+                    //     WeightSerial.Write(ZeroPacket, 0, ZeroPacket.Length);
 
                 }
                 if (ConnectionCounter == 20)
@@ -605,42 +625,38 @@ namespace TakinArkaScale
             return responseCode;
         }
 
-        public int SetZero()
+        public void SetZero()
         {
             byte[] IsOnlinePacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
             responseRecevied = false;
             while (responseRecevied == false) ;
-            return readResponse();
         }
 
 
-        public int SetTare()
+        public void SetTare()
         {
             byte[] IsOnlinePacket = { 0x01, 0x26, 0x01, 0x00, 0x9b, 0x91 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
             responseRecevied = false;
             while (responseRecevied == false) ;
-            return readResponse();
         }
-        public int ClearTare()
+        public void ClearTare()
         {
             byte[] IsOnlinePacket = { 0x01, 0x25, 0x01, 0x00, 0x9b, 0x61 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
             responseRecevied = false;
             while (responseRecevied == false) ;
-            return readResponse();
         }
-        public int SetFixedTare(int value)
+        public void SetFixedTare(int value)
         {
-            byte[] IsOnlinePacket = { 0x01, 0x45, (byte)value.ToString().Length};
+            byte[] IsOnlinePacket = { 0x01, 0x45, (byte)value.ToString().Length };
             byte[] valueBytes = System.Text.Encoding.ASCII.GetBytes(value.ToString());
             byte[] crc = { 0x00, 0x00 };
             IsOnlinePacket = IsOnlinePacket.Concat(valueBytes).ToArray().Concat(crc).ToArray();
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
             responseRecevied = false;
             while (responseRecevied == false) ;
-            return readResponse();
         }
         private void clearTare_Click(object sender, EventArgs e)
         {
@@ -739,22 +755,27 @@ namespace TakinArkaScale
                                 ConnectionCounter = 0;
                                 break;
                             case 0x27:
+                                functionCode = DataPack[0];
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
                             case 0x26:
+                                functionCode = DataPack[0];
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
                             case 0x25:
+                                functionCode = DataPack[0];
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
                             case 0X45:
+                                functionCode = DataPack[0];
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
                             case 0X18:
+                                functionCode = DataPack[0];
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
