@@ -252,34 +252,34 @@
             // 
             // zero
             // 
-            this.zero.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.zero.Location = new System.Drawing.Point(348, 99);
+            this.zero.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.zero.Location = new System.Drawing.Point(366, 99);
             this.zero.Name = "zero";
-            this.zero.Size = new System.Drawing.Size(54, 23);
+            this.zero.Size = new System.Drawing.Size(41, 23);
             this.zero.TabIndex = 12;
-            this.zero.Text = "zero";
+            this.zero.Text = "صفر";
             this.zero.UseVisualStyleBackColor = true;
             this.zero.Click += new System.EventHandler(this.zero_Click);
             // 
             // clearTare
             // 
-            this.clearTare.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.clearTare.Location = new System.Drawing.Point(276, 99);
+            this.clearTare.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.clearTare.Location = new System.Drawing.Point(275, 99);
             this.clearTare.Name = "clearTare";
-            this.clearTare.Size = new System.Drawing.Size(66, 23);
+            this.clearTare.Size = new System.Drawing.Size(87, 23);
             this.clearTare.TabIndex = 13;
-            this.clearTare.Text = "R-Tare";
+            this.clearTare.Text = "حذف پارسنگ";
             this.clearTare.UseVisualStyleBackColor = true;
             this.clearTare.Click += new System.EventHandler(this.clearTare_Click);
             // 
             // tare
             // 
-            this.tare.Font = new System.Drawing.Font("Showcard Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tare.Location = new System.Drawing.Point(211, 99);
+            this.tare.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tare.Location = new System.Drawing.Point(210, 99);
             this.tare.Name = "tare";
-            this.tare.Size = new System.Drawing.Size(59, 23);
+            this.tare.Size = new System.Drawing.Size(62, 23);
             this.tare.TabIndex = 14;
-            this.tare.Text = "Tare";
+            this.tare.Text = "پارسنگ";
             this.tare.UseVisualStyleBackColor = true;
             this.tare.Click += new System.EventHandler(this.tare_Click);
             // 
