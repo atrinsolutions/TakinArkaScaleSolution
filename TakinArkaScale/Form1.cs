@@ -248,6 +248,13 @@ namespace TakinArkaScale
                 }
 
             }
+            if (s.Contains("#TG#"))
+            {
+                string output;
+                output = "#1#" + TareWeight.ToString()+"#";
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
+            }
         }
         public void TcpCommandTasks1(Object objScale)
         {
