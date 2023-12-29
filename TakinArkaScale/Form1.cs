@@ -1,4 +1,6 @@
 ﻿using System.IO.Ports;
+using System.Net;
+using System.Net.Sockets;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -93,16 +95,101 @@ namespace TakinArkaScale
     "230400",
     "460800",
     "921600"
-};
-        Thread readThread;
+};      Thread TcpTask1;
+        Thread TcpTask2;
+        TcpListener listener1 = null;
+        TcpListener listener2 = null;
         byte stateMachine = 0;
         int weight = 0;
         string rawWeight;
         TAKIN_Configuration defaultConfig = null;
         XDocument doc = new XDocument();
+        TcpClient tcpClient1;
+        TcpClient tcpClient2;
+        NetworkStream dataStream1;
+        NetworkStream dataStream2;
+        int clientDataCount = 0;
+        public byte[] netBuffer1 = new byte[204];
+        int clientDataCount1 = 0;
+        public byte[] netBuffer2 = new byte[204];
+
+        public void TcpCommandTasks1(Object objScale)
+        {
+            IPAddress serverIp = IPAddress.Parse(defaultConfig.HostIP);
+            listener1 = new TcpListener(serverIp, defaultConfig.TcpPort1);
+            listener1.Start();
+            while (true)
+            {
+                try
+                {
+                    tcpClient1 = listener1.AcceptTcpClient();
+                    dataStream1 = tcpClient1.GetStream();
+                    while ((clientDataCount1 = dataStream1.Read(netBuffer1, 0,netBuffer1.Length)) != 0)
+                    {
+                        Console.WriteLine(netBuffer1);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        public void TcpCommandTasks2(Object objScale)
+        {
+            IPAddress serverIp = IPAddress.Parse(defaultConfig.HostIP);
+            listener2 = new TcpListener(serverIp, defaultConfig.TcpPort2);
+            listener2.Start();
+            while (true)
+            {
+                try
+                {
+                    tcpClient2 = listener2.AcceptTcpClient();
+                    dataStream2 = tcpClient2.GetStream();
+                    while ((clientDataCount = dataStream2.Read(netBuffer2, 0, netBuffer2.Length)) != 0)
+                    {
+                        Console.WriteLine(netBuffer2);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
         public Form1()
         {
             InitializeComponent();
+            string initializerFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}initializer.xml";
+            try
+            {
+                doc = XDocument.Load(initializerFilePath);
+                defaultConfig = (from element in doc.Descendants("DataContext").Elements("Configuration")
+                                 select new TAKIN_Configuration
+                                 {
+                                     SerialPortName = element.Element("SerialPortName").Value.ToString(),
+                                     Baudrate = Convert.ToInt32(element.Element("Baudrate").Value),
+                                     Parity = (Parity)Enum.Parse(typeof(Parity), element.Element("Parity").Value, true),
+                                     StopBit = (StopBits)Enum.Parse(typeof(StopBits), element.Element("StopBit").Value, true),
+                                     HostIP = element.Element("HostIP").Value,
+                                     TcpPort1 = Convert.ToInt32(element.Element("TcpPort1").Value),
+                                     TcpPort2 = Convert.ToInt32(element.Element("TcpPort2").Value),
+                                     isTcpServer = Convert.ToBoolean(element.Element("isTcpServer").Value),
+                                     TcpTimeout = Convert.ToInt32(element.Element("TcpTimeout").Value)
+
+                                 }).FirstOrDefault();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(initializerFilePath);
+            }
+            TcpTask1 = new Thread(TcpCommandTasks1);
+            TcpTask2 = new Thread(TcpCommandTasks2);
+            TcpTask1.Start();
+            TcpTask2.Start();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -224,41 +311,7 @@ namespace TakinArkaScale
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string initializerFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}initializer.xml";
-            try
-            {
-                doc = XDocument.Load(initializerFilePath);
-                defaultConfig = (from element in doc.Descendants("DataContext").Elements("Configuration")
-                                 select new TAKIN_Configuration
-                                 {
-                                     SerialPortName = element.Element("SerialPortName").Value.ToString(),
-                                     Baudrate = Convert.ToInt32(element.Element("Baudrate").Value),
-                                     Parity = (Parity)Enum.Parse(typeof(Parity), element.Element("Parity").Value, true),
-                                     StopBit = (StopBits)Enum.Parse(typeof(StopBits), element.Element("StopBit").Value, true),
-                                     HostIP = element.Element("HostIP").Value,
-                                     TcpPort1 = Convert.ToInt32(element.Element("TcpPort1").Value),
-                                     TcpPort2 = Convert.ToInt32(element.Element("TcpPort2").Value),
-                                     isTcpServer = Convert.ToBoolean(element.Element("isTcpServer").Value),
-                                     TcpTimeout = Convert.ToInt32(element.Element("TcpTimeout").Value)
-
-                                 }).FirstOrDefault();
-
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(initializerFilePath);
-            }
-
-
-
-
-
-
-
-
-
-
-
+            
 
 
             this.BackColor = Color.LimeGreen;
@@ -267,26 +320,6 @@ namespace TakinArkaScale
             lbWeight.Text = ((double)0 / (double)1000).ToString("0.000");
             lbTare.Text = ((double)0 / (double)1000).ToString("0.000");
 
-            zero.FlatStyle = FlatStyle.Flat;
-            zero.BackColor = Color.Transparent;
-            zero.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            zero.FlatAppearance.MouseOverBackColor = Color.Transparent;
-
-            tare.FlatStyle = FlatStyle.Flat;
-            tare.BackColor = Color.Transparent;
-            tare.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            tare.FlatAppearance.MouseOverBackColor = Color.Transparent;
-
-
-            clearTare.FlatStyle = FlatStyle.Flat;
-            clearTare.BackColor = Color.Transparent;
-            clearTare.ForeColor = Color.Transparent;
-            clearTare.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            clearTare.FlatAppearance.MouseOverBackColor = Color.Transparent;
-
-            btnZero.BackColor = Color.LightGreen;
-            btnNet.BackColor = Color.LightGray;
-            btnStable.BackColor = Color.LightGray;
 
             ContextMenuStrip menu = new ContextMenuStrip();
             ToolStripMenuItem menuItemA = new ToolStripMenuItem("Setting");
@@ -317,7 +350,7 @@ namespace TakinArkaScale
                 menuItemA1.DropDownItems.Add(menuItemCom);
 
             }
-            
+
             foreach (string baudrates in SupportedBaudRates)
             {
                 ToolStripMenuItem menuItemBaudrates = new ToolStripMenuItem(baudrates);
@@ -442,23 +475,22 @@ namespace TakinArkaScale
             ids = formIdList.Split(',').Select(int.Parse).ToList();
 
             ViewWeight = ids[0];
+
             TareWeight = ids[1];
             WeightIndication = ids[3];
             ZeroFlag = (WeightIndication & 0x01) > 0;
-            WeightIndication >>= 1;
             TareFlag = (WeightIndication & 0x02) > 0;
-            WeightIndication >>= 1;
             StableFlag = (WeightIndication & 0x04) > 0;
-            WeightIndication >>= 1;
             NegFlag = (WeightIndication & 0x08) > 0;
-            WeightIndication >>= 1;
             W2Flag = (WeightIndication & 0x10) > 0;
-            WeightIndication >>= 1;
             OverFlag = (WeightIndication & 0x20) > 0;
-            WeightIndication >>= 1;
             BatFlag = (WeightIndication & 0x40) > 0;
-            WeightIndication >>= 1;
             UnderFlag = (WeightIndication & 0x80) > 0;
+            zeroLed.BackColor = ZeroFlag == true ? Color.Green : Color.LightGray;
+            stbLed.BackColor = StableFlag == true ? Color.Green : Color.LightGray;
+            netLed.BackColor = TareFlag == true ? Color.Green : Color.LightGray;
+            if (NegFlag)
+                ViewWeight *= -1;
         }
 
         void GetTare()
@@ -467,6 +499,7 @@ namespace TakinArkaScale
             List<int> ids = formIdList.Split(',').Select(int.Parse).ToList();
             TareWeight = ids[0];
         }
+
 
         private void clearTare_Click(object sender, EventArgs e)
         {
@@ -486,10 +519,10 @@ namespace TakinArkaScale
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
         }
 
-        private void ShowData()
+        private void UpdateScreen()
         {
             SetTextTare(((float)TareWeight / 1000).ToString("0.000"));
-            if (OverFlag == false && UnderFlag == false && NegFlag == false)
+            if (OverFlag == false && UnderFlag == false)
             {
                 SetTextWeight(((float)ViewWeight / 1000).ToString("0.000"));
             }
@@ -561,7 +594,7 @@ namespace TakinArkaScale
                         {
                             case 0x13:
                                 GetMyWeight();
-                                ShowData();
+                                UpdateScreen();
                                 ConnectionCounter = 0;
                                 break;
                             case 0x16:
@@ -583,6 +616,7 @@ namespace TakinArkaScale
 
             }
         }
+
         private void UpdateConnectionLabel(object sender, EventArgs e)
         {
             if (SystemConnected == true)
@@ -609,7 +643,7 @@ namespace TakinArkaScale
         private void ApplySetting(object sender, EventArgs e)
         {
             WriteToServiceConfiguration();
-            if(WeightSerial.IsOpen == true)
+            if (WeightSerial.IsOpen == true)
             {
                 WeightSerial.Close();
             }
@@ -625,7 +659,7 @@ namespace TakinArkaScale
 
         void firstPortSelection(object sender, EventArgs e)
         {
-            defaultConfig.TcpPort1= int.Parse(Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت یک", "شماره پورت", "9990"));
+            defaultConfig.TcpPort1 = int.Parse(Microsoft.VisualBasic.Interaction.InputBox("تنظیم شماره پورت یک", "شماره پورت", "9990"));
         }
 
         private void setPortName(object sender, EventArgs e)

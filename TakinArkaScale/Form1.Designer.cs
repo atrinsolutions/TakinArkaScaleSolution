@@ -48,17 +48,20 @@
             this.tCPPORT1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tCPPORT2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zero = new System.Windows.Forms.Button();
-            this.tare = new System.Windows.Forms.Button();
-            this.clearTare = new System.Windows.Forms.Button();
-            this.btnZero = new System.Windows.Forms.Button();
-            this.btnNet = new System.Windows.Forms.Button();
-            this.btnStable = new System.Windows.Forms.Button();
             this.lbWeight = new System.Windows.Forms.Label();
             this.lbTare = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.lblConnection = new System.Windows.Forms.Label();
+            this.zero = new System.Windows.Forms.Button();
+            this.clearTare = new System.Windows.Forms.Button();
+            this.tare = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.zeroLed = new System.Windows.Forms.Label();
+            this.netLed = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.stbLed = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -193,82 +196,12 @@
             this.exitApplicationToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.exitApplicationToolStripMenuItem.Text = "Quit";
             // 
-            // zero
-            // 
-            this.zero.BackColor = System.Drawing.Color.Transparent;
-            this.zero.FlatAppearance.BorderSize = 0;
-            this.zero.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.zero.ForeColor = System.Drawing.Color.Black;
-            this.zero.Location = new System.Drawing.Point(454, 23);
-            this.zero.Name = "zero";
-            this.zero.Size = new System.Drawing.Size(76, 15);
-            this.zero.TabIndex = 1;
-            this.zero.UseVisualStyleBackColor = false;
-            this.zero.Click += new System.EventHandler(this.zero_Click);
-            // 
-            // tare
-            // 
-            this.tare.BackColor = System.Drawing.Color.Transparent;
-            this.tare.FlatAppearance.BorderSize = 0;
-            this.tare.Font = new System.Drawing.Font("B Nazanin", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tare.Location = new System.Drawing.Point(454, 73);
-            this.tare.Name = "tare";
-            this.tare.Size = new System.Drawing.Size(76, 16);
-            this.tare.TabIndex = 2;
-            this.tare.UseVisualStyleBackColor = false;
-            this.tare.Click += new System.EventHandler(this.tare_Click);
-            // 
-            // clearTare
-            // 
-            this.clearTare.BackColor = System.Drawing.Color.Transparent;
-            this.clearTare.FlatAppearance.BorderSize = 0;
-            this.clearTare.Font = new System.Drawing.Font("B Nazanin", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.clearTare.Location = new System.Drawing.Point(454, 48);
-            this.clearTare.Name = "clearTare";
-            this.clearTare.Size = new System.Drawing.Size(76, 15);
-            this.clearTare.TabIndex = 3;
-            this.clearTare.UseVisualStyleBackColor = false;
-            this.clearTare.Click += new System.EventHandler(this.clearTare_Click);
-            // 
-            // btnZero
-            // 
-            this.btnZero.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnZero.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnZero.Location = new System.Drawing.Point(404, 68);
-            this.btnZero.Name = "btnZero";
-            this.btnZero.Size = new System.Drawing.Size(42, 23);
-            this.btnZero.TabIndex = 4;
-            this.btnZero.Text = "صفر";
-            this.btnZero.UseVisualStyleBackColor = false;
-            // 
-            // btnNet
-            // 
-            this.btnNet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnNet.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnNet.Location = new System.Drawing.Point(404, 44);
-            this.btnNet.Name = "btnNet";
-            this.btnNet.Size = new System.Drawing.Size(42, 23);
-            this.btnNet.TabIndex = 5;
-            this.btnNet.Text = "خالص";
-            this.btnNet.UseVisualStyleBackColor = false;
-            // 
-            // btnStable
-            // 
-            this.btnStable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnStable.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnStable.Location = new System.Drawing.Point(404, 20);
-            this.btnStable.Name = "btnStable";
-            this.btnStable.Size = new System.Drawing.Size(42, 23);
-            this.btnStable.TabIndex = 6;
-            this.btnStable.Text = "ثبات";
-            this.btnStable.UseVisualStyleBackColor = false;
-            // 
             // lbWeight
             // 
             this.lbWeight.AutoSize = true;
             this.lbWeight.BackColor = System.Drawing.SystemColors.Window;
             this.lbWeight.Font = new System.Drawing.Font("SimSun", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbWeight.Location = new System.Drawing.Point(216, 40);
+            this.lbWeight.Location = new System.Drawing.Point(218, 46);
             this.lbWeight.Name = "lbWeight";
             this.lbWeight.Size = new System.Drawing.Size(145, 48);
             this.lbWeight.TabIndex = 7;
@@ -279,7 +212,7 @@
             this.lbTare.AutoSize = true;
             this.lbTare.BackColor = System.Drawing.Color.Transparent;
             this.lbTare.Font = new System.Drawing.Font("SimSun", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbTare.Location = new System.Drawing.Point(26, 40);
+            this.lbTare.Location = new System.Drawing.Point(31, 46);
             this.lbTare.Name = "lbTare";
             this.lbTare.Size = new System.Drawing.Size(145, 48);
             this.lbTare.TabIndex = 8;
@@ -299,9 +232,9 @@
             this.button1.BackColor = System.Drawing.Color.White;
             this.button1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.button1.Image = global::TakinArkaScale.Properties.Resources.exit;
-            this.button1.Location = new System.Drawing.Point(477, 2);
+            this.button1.Location = new System.Drawing.Point(346, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 18);
+            this.button1.Size = new System.Drawing.Size(32, 18);
             this.button1.TabIndex = 9;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnExit_Click);
@@ -311,11 +244,104 @@
             this.lblConnection.AutoSize = true;
             this.lblConnection.BackColor = System.Drawing.Color.IndianRed;
             this.lblConnection.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblConnection.Location = new System.Drawing.Point(48, 4);
+            this.lblConnection.Location = new System.Drawing.Point(49, 9);
             this.lblConnection.Name = "lblConnection";
             this.lblConnection.Size = new System.Drawing.Size(15, 11);
             this.lblConnection.TabIndex = 11;
             this.lblConnection.Text = "     ";
+            // 
+            // zero
+            // 
+            this.zero.Location = new System.Drawing.Point(348, 100);
+            this.zero.Name = "zero";
+            this.zero.Size = new System.Drawing.Size(54, 23);
+            this.zero.TabIndex = 12;
+            this.zero.Text = "zero";
+            this.zero.UseVisualStyleBackColor = true;
+            this.zero.Click += new System.EventHandler(this.zero_Click);
+            // 
+            // clearTare
+            // 
+            this.clearTare.Location = new System.Drawing.Point(276, 100);
+            this.clearTare.Name = "clearTare";
+            this.clearTare.Size = new System.Drawing.Size(66, 23);
+            this.clearTare.TabIndex = 13;
+            this.clearTare.Text = "clearTare";
+            this.clearTare.UseVisualStyleBackColor = true;
+            this.clearTare.Click += new System.EventHandler(this.clearTare_Click);
+            // 
+            // tare
+            // 
+            this.tare.Location = new System.Drawing.Point(211, 100);
+            this.tare.Name = "tare";
+            this.tare.Size = new System.Drawing.Size(59, 23);
+            this.tare.TabIndex = 14;
+            this.tare.Text = "tare";
+            this.tare.UseVisualStyleBackColor = true;
+            this.tare.Click += new System.EventHandler(this.tare_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Location = new System.Drawing.Point(12, 104);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(30, 15);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "صفر";
+            // 
+            // zeroLed
+            // 
+            this.zeroLed.AutoSize = true;
+            this.zeroLed.BackColor = System.Drawing.Color.Silver;
+            this.zeroLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.zeroLed.Location = new System.Drawing.Point(44, 108);
+            this.zeroLed.Name = "zeroLed";
+            this.zeroLed.Size = new System.Drawing.Size(15, 11);
+            this.zeroLed.TabIndex = 16;
+            this.zeroLed.Text = "     ";
+            // 
+            // netLed
+            // 
+            this.netLed.AutoSize = true;
+            this.netLed.BackColor = System.Drawing.Color.Silver;
+            this.netLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.netLed.Location = new System.Drawing.Point(171, 108);
+            this.netLed.Name = "netLed";
+            this.netLed.Size = new System.Drawing.Size(15, 11);
+            this.netLed.TabIndex = 18;
+            this.netLed.Text = "     ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Location = new System.Drawing.Point(128, 104);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 15);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "خالص";
+            // 
+            // stbLed
+            // 
+            this.stbLed.AutoSize = true;
+            this.stbLed.BackColor = System.Drawing.Color.Silver;
+            this.stbLed.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.stbLed.Location = new System.Drawing.Point(102, 108);
+            this.stbLed.Name = "stbLed";
+            this.stbLed.Size = new System.Drawing.Size(15, 11);
+            this.stbLed.TabIndex = 20;
+            this.stbLed.Text = "     ";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Location = new System.Drawing.Point(67, 105);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 15);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "ثبات";
             // 
             // Form1
             // 
@@ -323,20 +349,23 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(539, 94);
+            this.ClientSize = new System.Drawing.Size(412, 131);
+            this.Controls.Add(this.stbLed);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.netLed);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.zeroLed);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.tare);
+            this.Controls.Add(this.clearTare);
+            this.Controls.Add(this.zero);
             this.Controls.Add(this.lblConnection);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lbTare);
             this.Controls.Add(this.lbWeight);
-            this.Controls.Add(this.btnStable);
-            this.Controls.Add(this.btnNet);
-            this.Controls.Add(this.btnZero);
-            this.Controls.Add(this.clearTare);
-            this.Controls.Add(this.tare);
-            this.Controls.Add(this.zero);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Takin Indicator X10";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -351,12 +380,6 @@
         private NotifyIcon notifyIcon;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem appSettingToolStripMenuItem;
-        private Button zero;
-        private Button tare;
-        private Button clearTare;
-        private Button btnZero;
-        private Button btnNet;
-        private Button btnStable;
         private Label lbWeight;
         private Label lbTare;
         private ToolStripMenuItem exitApplicationToolStripMenuItem;
@@ -377,5 +400,14 @@
         private Label label1;
         private Button button1;
         private Label lblConnection;
+        private Button zero;
+        private Button clearTare;
+        private Button tare;
+        private Label label2;
+        private Label zeroLed;
+        private Label netLed;
+        private Label label4;
+        private Label stbLed;
+        private Label label6;
     }
 }
