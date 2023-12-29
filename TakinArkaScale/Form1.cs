@@ -612,7 +612,6 @@ namespace TakinArkaScale
             }
             return crc;
         }
-
         void GetMyWeight()
         {
             string formIdList;
@@ -637,20 +636,10 @@ namespace TakinArkaScale
                 ViewWeight *= -1;
             RoundWeight = ViewWeight + TareWeight;
         }
-
-        void GetTare()
-        {
-            string formIdList = System.Text.Encoding.UTF8.GetString(DataPack, 2, ProtocolDataLenght);
-            List<int> ids = formIdList.Split(',').Select(int.Parse).ToList();
-            TareWeight = ids[0];
-        }
-
-
         public int readResponse()
         {
             return responseCode;
         }
-
         public void SetZero()
         {
             byte[] IsOnlinePacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
@@ -658,8 +647,6 @@ namespace TakinArkaScale
             responseRecevied = false;
             while (responseRecevied == false) ;
         }
-
-
         public void SetTare()
         {
             byte[] IsOnlinePacket = { 0x01, 0x26, 0x01, 0x00, 0x9b, 0x91 };
@@ -686,17 +673,19 @@ namespace TakinArkaScale
         }
         private void clearTare_Click(object sender, EventArgs e)
         {
-            ClearTare();
+            byte[] IsOnlinePacket = { 0x01, 0x25, 0x01, 0x00, 0x9b, 0x61 };
+            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
         }
         private void zero_Click(object sender, EventArgs e)
         {
-            SetZero();
+            byte[] IsOnlinePacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
+            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
         }
         private void tare_Click(object sender, EventArgs e)
         {
-            SetTare();
+            byte[] IsOnlinePacket = { 0x01, 0x26, 0x01, 0x00, 0x9b, 0x91 };
+            WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
         }
-
         private void UpdateScreen()
         {
             SetTextTare(((float)TareWeight / 1000).ToString("0.000"));
@@ -712,7 +701,6 @@ namespace TakinArkaScale
                     SetTextWeight(((float)ViewWeight / 1000).ToString("0.000"));
             }
         }
-
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
 
