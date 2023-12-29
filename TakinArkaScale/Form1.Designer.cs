@@ -201,7 +201,7 @@
             this.lbWeight.AutoSize = true;
             this.lbWeight.BackColor = System.Drawing.Color.Transparent;
             this.lbWeight.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbWeight.Location = new System.Drawing.Point(211, 40);
+            this.lbWeight.Location = new System.Drawing.Point(216, 42);
             this.lbWeight.Name = "lbWeight";
             this.lbWeight.Size = new System.Drawing.Size(186, 54);
             this.lbWeight.TabIndex = 7;
