@@ -244,6 +244,9 @@ namespace TakinArkaScale
                     {
                         handleCommands(netBuffer1, dataStream1);
                     }
+                    dataStream1.Flush();
+                    dataStream1.Close();
+                    tcpClient1.Close();
                 }
                 catch (Exception ex)
                 {
@@ -266,6 +269,9 @@ namespace TakinArkaScale
                     {
                         handleCommands(netBuffer2, dataStream2);
                     }
+                    dataStream2.Flush();
+                    dataStream2.Close();
+                    tcpClient2.Close();
                 }
                 catch (Exception ex)
                 {
@@ -521,8 +527,8 @@ namespace TakinArkaScale
                 {
                     byte[] IsOnlinePacket = { 0x01, 0x16, 0x01, 0x00, 0x94, 0x91 };
                     WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-                    byte[] ZeroPacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
-                    WeightSerial.Write(ZeroPacket, 0, ZeroPacket.Length);
+               //     byte[] ZeroPacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
+               //     WeightSerial.Write(ZeroPacket, 0, ZeroPacket.Length);
 
                 }
                 if (ConnectionCounter == 20)
@@ -603,7 +609,7 @@ namespace TakinArkaScale
         {
             byte[] IsOnlinePacket = { 0x01, 0x27, 0x01, 0x00, 0x5b, 0xc0 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-            bool responseRecevied = false;
+            responseRecevied = false;
             while (responseRecevied == false) ;
             return readResponse();
         }
@@ -613,7 +619,7 @@ namespace TakinArkaScale
         {
             byte[] IsOnlinePacket = { 0x01, 0x26, 0x01, 0x00, 0x9b, 0x91 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-            bool responseRecevied = false;
+            responseRecevied = false;
             while (responseRecevied == false) ;
             return readResponse();
         }
@@ -621,19 +627,18 @@ namespace TakinArkaScale
         {
             byte[] IsOnlinePacket = { 0x01, 0x25, 0x01, 0x00, 0x9b, 0x61 };
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-            bool responseRecevied = false;
+            responseRecevied = false;
             while (responseRecevied == false) ;
             return readResponse();
         }
         public int SetFixedTare(int value)
         {
-            byte[] IsOnlinePacket = { 0x01, 0x42, (byte)value.ToString().Length};
+            byte[] IsOnlinePacket = { 0x01, 0x45, (byte)value.ToString().Length};
             byte[] valueBytes = System.Text.Encoding.ASCII.GetBytes(value.ToString());
             byte[] crc = { 0x00, 0x00 };
-
             IsOnlinePacket = IsOnlinePacket.Concat(valueBytes).ToArray().Concat(crc).ToArray();
             WeightSerial.Write(IsOnlinePacket, 0, IsOnlinePacket.Length);
-            bool responseRecevied = false;
+            responseRecevied = false;
             while (responseRecevied == false) ;
             return readResponse();
         }
@@ -742,6 +747,14 @@ namespace TakinArkaScale
                                 responseCode = DataPack[2];
                                 break;
                             case 0x25:
+                                responseRecevied = true;
+                                responseCode = DataPack[2];
+                                break;
+                            case 0X45:
+                                responseRecevied = true;
+                                responseCode = DataPack[2];
+                                break;
+                            case 0X18:
                                 responseRecevied = true;
                                 responseCode = DataPack[2];
                                 break;
