@@ -48,7 +48,6 @@
             this.tCPPORT1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tCPPORT2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbWeight = new System.Windows.Forms.Label();
             this.lbTare = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -62,6 +61,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.stbLed = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.lbWeight = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -196,25 +197,14 @@
             this.exitApplicationToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.exitApplicationToolStripMenuItem.Text = "Quit";
             // 
-            // lbWeight
-            // 
-            this.lbWeight.AutoSize = true;
-            this.lbWeight.BackColor = System.Drawing.Color.Transparent;
-            this.lbWeight.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbWeight.Location = new System.Drawing.Point(216, 42);
-            this.lbWeight.Name = "lbWeight";
-            this.lbWeight.Size = new System.Drawing.Size(186, 54);
-            this.lbWeight.TabIndex = 7;
-            this.lbWeight.Text = "22.780";
-            // 
             // lbTare
             // 
             this.lbTare.AutoSize = true;
             this.lbTare.BackColor = System.Drawing.Color.Transparent;
-            this.lbTare.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbTare.Location = new System.Drawing.Point(31, 42);
+            this.lbTare.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbTare.Location = new System.Drawing.Point(33, 33);
             this.lbTare.Name = "lbTare";
-            this.lbTare.Size = new System.Drawing.Size(156, 54);
+            this.lbTare.Size = new System.Drawing.Size(153, 65);
             this.lbTare.TabIndex = 8;
             this.lbTare.Text = "1.250";
             // 
@@ -243,10 +233,10 @@
             // 
             this.lblConnection.AutoSize = true;
             this.lblConnection.BackColor = System.Drawing.Color.IndianRed;
-            this.lblConnection.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblConnection.Location = new System.Drawing.Point(54, 4);
+            this.lblConnection.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblConnection.Location = new System.Drawing.Point(61, 5);
             this.lblConnection.Name = "lblConnection";
-            this.lblConnection.Size = new System.Drawing.Size(22, 13);
+            this.lblConnection.Size = new System.Drawing.Size(15, 12);
             this.lblConnection.TabIndex = 11;
             this.lblConnection.Text = "     ";
             // 
@@ -349,6 +339,28 @@
             this.label6.TabIndex = 19;
             this.label6.Text = "ثبات";
             // 
+            // lbWeight
+            // 
+            this.lbWeight.AutoSize = true;
+            this.lbWeight.BackColor = System.Drawing.Color.Transparent;
+            this.lbWeight.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbWeight.Location = new System.Drawing.Point(237, 33);
+            this.lbWeight.Name = "lbWeight";
+            this.lbWeight.Size = new System.Drawing.Size(192, 65);
+            this.lbWeight.TabIndex = 21;
+            this.lbWeight.Text = "0.000   ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("B Nazanin", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(19, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(42, 17);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "online";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -356,6 +368,8 @@
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.BackgroundImage = global::TakinArkaScale.Properties.Resources.FORM2;
             this.ClientSize = new System.Drawing.Size(416, 127);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lbWeight);
             this.Controls.Add(this.stbLed);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.netLed);
@@ -369,7 +383,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lbTare);
-            this.Controls.Add(this.lbWeight);
             this.Name = "Form1";
             this.Text = "Takin Indicator X10";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -386,7 +399,6 @@
         private NotifyIcon notifyIcon;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem appSettingToolStripMenuItem;
-        private Label lbWeight;
         private Label lbTare;
         private ToolStripMenuItem exitApplicationToolStripMenuItem;
         private ToolStripMenuItem cOMPORTToolStripMenuItem;
@@ -415,5 +427,7 @@
         private Label label4;
         private Label stbLed;
         private Label label6;
+        private Label lbWeight;
+        private Label label3;
     }
 }
