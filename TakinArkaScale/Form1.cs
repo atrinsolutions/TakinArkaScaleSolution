@@ -145,29 +145,11 @@ namespace TakinArkaScale
                 {
                     if (ViewWeight > 0 || ViewWeight < 0)
                     {
-                        output = "#1#" + ViewWeight.ToString();
-                        if (StableFlag)
-                        {
-                            output += "#1#";
-                        }
-                        else
-                        {
-                            output += "#0#";
-                        }
-                        output += TareWeight.ToString();
+                        output = "#1#" + ViewWeight.ToString()+"#";
                     }
                     else
                     {
                         output = "#0#1";
-                        if (StableFlag)
-                        {
-                            output += "#1#";
-                        }
-                        else
-                        {
-                            output += "#0#";
-                        }
-                        output += TareWeight.ToString();
                     }
 
                 }
@@ -186,25 +168,15 @@ namespace TakinArkaScale
                 {
                     if (ViewWeight > 0)
                     {
-                        output = "#1#" + ViewWeight.ToString();
-                        if (StableFlag)
-                        {
-                            output += "#1#";
-                        }
-                        else
-                        {
-                            output += "#0#";
-                        }
-                        output += TareWeight.ToString();
+                        output = "#1#" + ViewWeight.ToString()+"#";
                     }
                     else
                     {
                         if (ViewWeight < 0)
-                            output = "#0#Weight Negative#";
+                            output = "#0#Negative Weight#";
                         else
-                            output = "#0#Zerot-Weigh#";
+                            output = "#0#Zerot-Weight#";
                     }
-
                 }
                 else
                 {
@@ -251,8 +223,7 @@ namespace TakinArkaScale
                 var splitStr = s.Split('#');
                 if (splitStr[1] == "TS")
                 {
-                    fixedTareValue = int.Parse(splitStr[2]);
-                    SetFixedTare(fixedTareValue);
+                    SetFixedTare(int.Parse(splitStr[2]));
                     string output;
                     if (functionCode == 0x45)
                         output = "#1#";
@@ -266,7 +237,17 @@ namespace TakinArkaScale
             if (s.Contains("#TG#"))
             {
                 string output;
-                output = "#1#" + TareWeight.ToString()+"#";
+                output = "#1#" + (TareWeight+fixedTareValue).ToString()+"#";
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
+                dataStream.Write(msg, 0, msg.Length);
+            }
+            if (s.Contains("#WE#"))
+            {
+                string output;
+                if (StableFlag)
+                    output = "#1#";
+                else
+                    output = "#0#";
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(output);
                 dataStream.Write(msg, 0, msg.Length);
             }
@@ -620,6 +601,7 @@ namespace TakinArkaScale
             ids = formIdList.Split(',').Select(int.Parse).ToList();
             ViewWeight = ids[0];
             TareWeight = ids[1];
+            fixedTareValue = ids[2];
             WeightIndication = ids[3];
             ZeroFlag = (WeightIndication & 0x01) > 0;
             TareFlag = (WeightIndication & 0x02) > 0;
@@ -634,7 +616,7 @@ namespace TakinArkaScale
             netLed.BackColor = TareFlag == true ? Color.Green : Color.LightGray;
             if (NegFlag)
                 ViewWeight *= -1;
-            RoundWeight = ViewWeight + TareWeight;
+            RoundWeight = ViewWeight + TareWeight+ fixedTareValue;
         }
         public int readResponse()
         {
@@ -688,7 +670,7 @@ namespace TakinArkaScale
         }
         private void UpdateScreen()
         {
-            SetTextTare(((float)TareWeight / 1000).ToString("0.000"));
+            SetTextTare(((float)(TareWeight+fixedTareValue) / 1000).ToString("0.000"));
             if (OverFlag == false && UnderFlag == false)
             {
                 SetTextWeight(((float)ViewWeight / 1000).ToString("0.000"));

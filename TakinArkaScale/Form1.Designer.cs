@@ -221,7 +221,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.White;
             this.button1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button1.Image = global::TakinArkaScale.Properties.Resources.exit;
+            this.button1.Image = global::ScaleConnector.Properties.Resources.exit;
             this.button1.Location = new System.Drawing.Point(346, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(32, 18);
@@ -366,7 +366,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.BackgroundImage = global::TakinArkaScale.Properties.Resources.FORM2;
+            this.BackgroundImage = global::ScaleConnector.Properties.Resources.FORM2;
             this.ClientSize = new System.Drawing.Size(416, 127);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lbWeight);
